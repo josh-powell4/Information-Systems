@@ -1,0 +1,82 @@
+Joshua E Powell
+ITE 449
+3.6.20
+
+A)
+_Allow all traffic on the localhost interface
+- Allow all traffic on the localhost interface
+    sudo iptables -P INPUT ACCEPT
+    sudo iptables -F
+    sudo iptables -A INPUT -i lo -j ACCEPT
+    sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+    sudo iptables -P INPUT DROP
+    sudo iptables -P FORWARD DROP
+    sudo iptables -P OUTPUT ACCEPT
+    sudo iptables -L -v
+    sudo /sbin/service iptables save
+
+_Permit the following ICMP types inbound and outbound
+-echo reply
+sudo iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+– destination unreachable
+sudo iptables -A OUTPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+
+– source quench
+sudo iptables -A OUTPUT -p icmp --icmp-type source-quench -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type source-quench -j ACCEPT
+
+– echo request
+sudo iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+– time exceeded
+sudo iptables -A OUTPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+
+– parameter problem
+sudo iptables -A OUTPUT -p icmp --icmp-type parameter-problem -j ACCEPT
+sudo iptables -A INPUT -p icmp --icmp-type parameter-problem -j ACCEPT
+
+– traceroute
+# traceroute www.google.com -n
+
+
+_Permit inbound ssh from anywhere
+sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+_Permit inbound http from anywhere
+sudo iptables -A INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+
+_Permit all outbound traffic to anywhere
+iptables -I OUTPUT -o eth0 -d 0.0.0.0/0 -j ACCEPT
+iptables -I INPUT -i eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+
+B)
+
+#ps -A | grep sshd > Verify the ssh daemon (sshd) is running on your CentOS VM.
+
+# sshd -v > Verify openssh is installed.
+
+$ sudo systemctl start sshd  > If sshd is installed but not not running, start it using systemctl and set it to start on boot.
+
+$ sudo systemctl status sshd  > If sshd is not installed, use the package manager to install the openssh server.
+
+C)
+#systemctl status nginx   > Determine if a web server is running on your CentOS VM
+
+#yum info nginx  > If no web server is running, check to see if the nginx package is installed.
+
+#yum install nginx  > If a web server is not installed, use the package manager to install the nginx web server.
+
+#systemctl status nginx  > Start the web server and set it to always start on boot.
+#systemctl enable nginx
+
+
+

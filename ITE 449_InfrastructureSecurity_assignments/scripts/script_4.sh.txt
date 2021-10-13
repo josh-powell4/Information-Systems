@@ -1,0 +1,5 @@
+#Joshua Powell 
+#CIS449
+# This script shows IP addresses assosciated w/ non root users
+
+ grep -i "Failed password for invalid user" authlog.example | awk '{print $13}' | sort -n  | uniq -c

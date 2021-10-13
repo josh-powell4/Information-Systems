@@ -1,0 +1,51 @@
+Powell Joshua E
+CIS 449
+2020.04.17
+Assignment 5
+
+1.Your organization wants to evaluate chef, puppet, and ansible for configuration management.
+Your task is to research and present an ansible playbook to complete the following:
+a.) install the nginx package on a CentOS 8 box
+(procedure to install Nginx web server on a CentOS Linux)
+> ssh user@cloud-server-ip
+> sudo yum search nginx
+> sudo yum update
+> sudo yum install nginx
+> sudo firewall-cmd --permanent --zone=public --add-service=https --add-service=http
+> sudo firewall-cmd --reload
+> sudo yum install nginx
+//Enable server
+> sudo systemctl enable nginx
+> sudo systemctl start nginx
+
+b.) configure a http server (not https)
+> [root@controller playbooks]# pwd
+/root/playbooks
+[root@controller playbooks]# cat httpd.yaml
+
+
+c.) install a page (index.html) from your organization’s testing sftp server
+(username: ansible, password: secret!pw4)
+
+*We can use a simple Dockerfile to build a derived NGINX image that adds a custom index.html.:
+$cat index.html
+<!DOCTYPE html>
+<title>ULSAH index.html file</title>
+<p>A simple Docker image, brought to you by ULSAH.</p>
+$cat Dockerfile
+FROM nginx
+# Add a new index.html to the document root
+ADD index.html /usr/share/nginx/html/
+
+#docker build -t nginx:ulsah
+Step1: FROM nginx ----> fd19524415dc
+Step2: ADD index.html /usr/share/nginx/html/ ----> c0c25eaf7415
+Removing intermediate container 04cc3278fdb4
+Successfully built c0c25eaf7415
+ 
+
+
+2.As an alternative to running nginx internally via CM, your boss wants you to determine how
+to create an nginx container. 
+
+> docker run --name some-nginx -d some-content-nginx

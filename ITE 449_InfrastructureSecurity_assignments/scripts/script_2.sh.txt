@@ -1,0 +1,5 @@
+#Joshua Powell 
+#CIS449
+# This script shows addresses associated with root login attempts
+
+grep -i "Failed password for root" authlog.example | awk '{print $11}' | sort -n | uniq -c

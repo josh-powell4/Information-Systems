@@ -1,0 +1,5 @@
+#Joshua Powell 
+#CIS449
+# This script counts all root login attemps
+
+grep -c "Failed password for root" authlog.example
